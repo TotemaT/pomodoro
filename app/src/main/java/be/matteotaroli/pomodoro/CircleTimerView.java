@@ -21,7 +21,6 @@ package be.matteotaroli.pomodoro;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.CornerPathEffect;
 import android.graphics.Paint;
 import android.graphics.PixelFormat;
 import android.graphics.PorterDuff;
@@ -36,10 +35,10 @@ import android.view.SurfaceView;
  */
 
 public class CircleTimerView extends SurfaceView implements SurfaceHolder.Callback {
-    public static String TAG = "CircleTimerView";
+    public static final String TAG = "CircleTimerView";
 
     /* Arc angles */
-    private float startAngle = 0;
+    private static final float START_ANGLE = 0;
     private float sweepAngle = 360;
 
     /* Drawing thread */
@@ -129,12 +128,10 @@ public class CircleTimerView extends SurfaceView implements SurfaceHolder.Callba
 
         paint.setDither(true);
         paint.setStyle(Paint.Style.STROKE);
-        paint.setStrokeJoin(Paint.Join.ROUND);
         paint.setStrokeCap(Paint.Cap.ROUND);
-        paint.setPathEffect(new CornerPathEffect(10));
         paint.setAntiAlias(true);
 
-        canvas.drawArc(oval, startAngle, sweepAngle, false, paint);
+        canvas.drawArc(oval, START_ANGLE, sweepAngle, false, paint);
     }
 
     /**

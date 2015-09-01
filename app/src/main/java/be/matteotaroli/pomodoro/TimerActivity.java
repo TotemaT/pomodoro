@@ -50,8 +50,8 @@ public class TimerActivity extends AppCompatActivity {
     private int mTimerCurrentTime;
 
     /* Timer constants */
-    private final int mTimerStartTime = 25 * 60;
-    private final long[] mVibratorPattern = {0, 1500, 500, 1500, 500, 1500};
+    private static final int TIMER_START_TIME = 25 * 60;
+    private static final long[] VIBRATOR_PATTERN = {0, 1500, 500, 1500, 500, 1500};
 
     @Override
     @TargetApi(21)
@@ -77,7 +77,7 @@ public class TimerActivity extends AppCompatActivity {
         mMinutesTv = (TextView) findViewById(R.id.minutes_textview);
         mSecondsTv = (TextView) findViewById(R.id.seconds_textview);
 
-        mTimerCurrentTime = mTimerStartTime;
+        mTimerCurrentTime = TIMER_START_TIME;
         mTimerStarted = false;
 
         resetUI();
@@ -92,7 +92,7 @@ public class TimerActivity extends AppCompatActivity {
      * Resets the timer to the start time.
      */
     public void resetUI() {
-        updateUI(mTimerStartTime);
+        updateUI(TIMER_START_TIME);
     }
 
     /**
@@ -124,7 +124,7 @@ public class TimerActivity extends AppCompatActivity {
     public void startTimer() {
         Log.d(TAG, "Start timer");
         mTimerStarted = true;
-        mTimerCurrentTime = mTimerStartTime;
+        mTimerCurrentTime = TIMER_START_TIME;
         resetUI();
         mHandler = new Handler();
         mRunnable = new Runnable() {
@@ -135,7 +135,7 @@ public class TimerActivity extends AppCompatActivity {
                 if (mTimerCurrentTime <= 0) {
                     updateUI(0);
                     Vibrator mVibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
-                    mVibrator.vibrate(mVibratorPattern, -1);
+                    mVibrator.vibrate(VIBRATOR_PATTERN, -1);
                     stopTimer();
                 } else {
                     updateUI(mTimerCurrentTime);
@@ -153,12 +153,16 @@ public class TimerActivity extends AppCompatActivity {
         Log.d(TAG, "Stop timer");
         mTimerStarted = false;
         mHandler.removeCallbacks(mRunnable);
-        mHandler = null;
-        mRunnable = null;
     }
 
     private void updateCircleView() {
-        float sweepAngle = 360 * (float) mTimerCurrentTime / (float) mTimerStartTime;
-        mCircleTimerView.setSweepAngle(sweepAngle);
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+
+                float sweepAngle = 360 * (float) mTimerCurrentTime / (float) TIMER_START_TIME;
+                mCircleTimerView.setSweepAngle(sweepAngle);
+            }
+        });
     }
 }
