@@ -44,6 +44,8 @@ public class CircleTimerView extends SurfaceView implements SurfaceHolder.Callba
     /* Drawing thread */
     private DrawCircleThread mDrawingThread;
 
+    private boolean mVisible;
+
     public CircleTimerView(Context context) {
         super(context);
         init();
@@ -57,6 +59,18 @@ public class CircleTimerView extends SurfaceView implements SurfaceHolder.Callba
     public CircleTimerView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init();
+    }
+
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        mVisible = true;
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        mVisible = false;
     }
 
     /**
@@ -100,6 +114,7 @@ public class CircleTimerView extends SurfaceView implements SurfaceHolder.Callba
 
     /**
      * Draws the circle on the given canvas.
+     *
      * @param canvas Surface on which to draw
      */
     private void drawCircle(Canvas canvas) {
@@ -154,15 +169,17 @@ public class CircleTimerView extends SurfaceView implements SurfaceHolder.Callba
             Canvas canvas;
 
             while (mRunning) {
-                canvas = null;
-                try {
-                    canvas = this.mSurfaceHolder.lockCanvas(null);
-                    synchronized (this.mSurfaceHolder) {
-                        drawCircle(canvas);
-                    }
-                } finally {
-                    if (canvas != null) {
-                        this.mSurfaceHolder.unlockCanvasAndPost(canvas);
+                if (mVisible) {
+                    canvas = null;
+                    try {
+                        canvas = this.mSurfaceHolder.lockCanvas(null);
+                        synchronized (this.mSurfaceHolder) {
+                            drawCircle(canvas);
+                        }
+                    } finally {
+                        if (canvas != null) {
+                            this.mSurfaceHolder.unlockCanvasAndPost(canvas);
+                        }
                     }
                 }
             }
