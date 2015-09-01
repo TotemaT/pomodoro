@@ -5,23 +5,23 @@
     tools:context=".TimerActivity">
 
     <LinearLayout
+        android:id="@+id/timer_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true">
+        android:layout_centerInParent="true"
+        android:clickable="true">
 
         <TextView
-            style="@style/TimerTextView"
             android:id="@+id/minutes_textview"
-            android:text="25"/>
+            style="@style/TimerTextView" />
 
         <TextView
             style="@style/TimerTextView"
-            android:text=":"/>
+            android:text=":" />
 
         <TextView
-            style="@style/TimerTextView"
             android:id="@+id/seconds_textview"
-            android:text="00"/>
+            style="@style/TimerTextView" />
 
     </LinearLayout>
 

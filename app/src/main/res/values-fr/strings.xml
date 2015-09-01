@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Pomodoro</string>
+    <string name="time_is_up">Temps écoulé. Beau travail, il est temps de faire une pause!</string>
+    <string name="logo_description">Logo représentant un minuteur tomate</string>
+</resources>
