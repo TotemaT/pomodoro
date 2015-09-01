@@ -28,7 +28,6 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 /**
@@ -38,19 +37,20 @@ import android.widget.TextView;
 public class TimerActivity extends AppCompatActivity {
     private static final String TAG = "TimerActivity";
 
+    /* UI elements */
     private TextView mMinutesTv;
     private TextView mSecondsTv;
+    private CircleTimerView mCircleTimerView;
 
     /* Timer elements */
     private Handler mHandler;
     private Runnable mRunnable;
-    private boolean mTimerStarted = false;
-    private Vibrator mVibrator;
+    private boolean mTimerStarted;
 
     private int mTimerCurrentTime;
 
     /* Timer constants */
-    private final int mTimerStartTime = 5 * 60;
+    private final int mTimerStartTime = 25 * 60;
     private final long[] mVibratorPattern = {0, 1500, 500, 1500, 500, 1500};
 
     @Override
@@ -67,9 +67,8 @@ public class TimerActivity extends AppCompatActivity {
             window.setStatusBarColor(getResources().getColor(R.color.BackgroundColorDarker));
         }
 
-
-        LinearLayout mTimerLayout = (LinearLayout) findViewById(R.id.timer_layout);
-        mTimerLayout.setOnClickListener(new View.OnClickListener() {
+        mCircleTimerView = (CircleTimerView) findViewById(R.id.circle_timerview);
+        mCircleTimerView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 timer();
@@ -77,16 +76,21 @@ public class TimerActivity extends AppCompatActivity {
         });
         mMinutesTv = (TextView) findViewById(R.id.minutes_textview);
         mSecondsTv = (TextView) findViewById(R.id.seconds_textview);
-        resetUI();
 
-        mVibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
+        mTimerCurrentTime = mTimerStartTime;
+        mTimerStarted = false;
+
+        resetUI();
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
 
     /**
      * Resets the timer to the start time.
      */
-
     public void resetUI() {
         updateUI(mTimerStartTime);
     }
@@ -96,7 +100,6 @@ public class TimerActivity extends AppCompatActivity {
      *
      * @param timeInSeconds Actual time in seconds
      */
-
     public void updateUI(long timeInSeconds) {
         int minutes = (int) timeInSeconds / 60;
         int seconds = (int) timeInSeconds - minutes * 60;
@@ -107,15 +110,10 @@ public class TimerActivity extends AppCompatActivity {
     /**
      * Starts or stops the timer according to its current state.
      */
-
     public void timer() {
         if (!mTimerStarted) {
-            Log.d(TAG, "Start timer");
-            mTimerStarted = true;
             startTimer();
         } else {
-            Log.d(TAG, "Stop timer");
-            mTimerStarted = false;
             stopTimer();
         }
     }
@@ -123,16 +121,20 @@ public class TimerActivity extends AppCompatActivity {
     /**
      * Starts the timer.
      */
-
     public void startTimer() {
+        Log.d(TAG, "Start timer");
+        mTimerStarted = true;
         mTimerCurrentTime = mTimerStartTime;
         resetUI();
         mHandler = new Handler();
         mRunnable = new Runnable() {
             @Override
             public void run() {
-                if (--mTimerCurrentTime <= 0) {
+                mTimerCurrentTime--;
+                updateCircleView();
+                if (mTimerCurrentTime <= 0) {
                     updateUI(0);
+                    Vibrator mVibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
                     mVibrator.vibrate(mVibratorPattern, -1);
                     stopTimer();
                 } else {
@@ -147,10 +149,16 @@ public class TimerActivity extends AppCompatActivity {
     /**
      * Stops the timer.
      */
-
     public void stopTimer() {
+        Log.d(TAG, "Stop timer");
+        mTimerStarted = false;
         mHandler.removeCallbacks(mRunnable);
         mHandler = null;
         mRunnable = null;
+    }
+
+    private void updateCircleView() {
+        float sweepAngle = 360 * (float) mTimerCurrentTime / (float) mTimerStartTime;
+        mCircleTimerView.setSweepAngle(sweepAngle);
     }
 }
