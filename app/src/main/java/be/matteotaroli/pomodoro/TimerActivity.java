@@ -93,6 +93,7 @@ public class TimerActivity extends AppCompatActivity {
      */
     public void resetUI() {
         updateUI(TIMER_START_TIME);
+        updateCircleView();
     }
 
     /**
