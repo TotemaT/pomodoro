@@ -44,8 +44,6 @@ public class CircleTimerView extends SurfaceView implements SurfaceHolder.Callba
     /* Drawing thread */
     private DrawCircleThread mDrawingThread;
 
-    private boolean mVisible;
-
     public CircleTimerView(Context context) {
         super(context);
         init();
@@ -59,18 +57,6 @@ public class CircleTimerView extends SurfaceView implements SurfaceHolder.Callba
     public CircleTimerView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init();
-    }
-
-    @Override
-    protected void onAttachedToWindow() {
-        super.onAttachedToWindow();
-        mVisible = true;
-    }
-
-    @Override
-    protected void onDetachedFromWindow() {
-        super.onDetachedFromWindow();
-        mVisible = false;
     }
 
     /**
@@ -118,35 +104,39 @@ public class CircleTimerView extends SurfaceView implements SurfaceHolder.Callba
      * @param canvas Surface on which to draw
      */
     private void drawCircle(Canvas canvas) {
-        canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
+        try {
+            canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
 
-        float height = canvas.getHeight();
-        float width = canvas.getWidth();
+            float height = canvas.getHeight();
+            float width = canvas.getWidth();
 
-        float centerX = width / 2;
-        float centerY = height / 2;
+            float centerX = width / 2;
+            float centerY = height / 2;
 
-        if (width > height) {
-            height *= 0.8f;
-            width = height;
-        } else {
-            width *= 0.8f;
-            height = width;
+            if (width > height) {
+                height *= 0.8f;
+                width = height;
+            } else {
+                width *= 0.8f;
+                height = width;
+            }
+
+            RectF oval = new RectF(centerX - width / 2, centerY - height / 2,
+                    centerX + width / 2, centerY + height / 2);
+
+            Paint paint = new Paint();
+            paint.setColor(getResources().getColor(android.R.color.white));
+            paint.setStrokeWidth(10);
+
+            paint.setDither(true);
+            paint.setStyle(Paint.Style.STROKE);
+            paint.setStrokeCap(Paint.Cap.ROUND);
+            paint.setAntiAlias(true);
+
+            canvas.drawArc(oval, START_ANGLE, sweepAngle, false, paint);
+        } catch (NullPointerException nPE) {
+            Log.e(TAG, nPE.getMessage());
         }
-
-        RectF oval = new RectF(centerX - width / 2, centerY - height / 2,
-                centerX + width / 2, centerY + height / 2);
-
-        Paint paint = new Paint();
-        paint.setColor(getResources().getColor(android.R.color.white));
-        paint.setStrokeWidth(10);
-
-        paint.setDither(true);
-        paint.setStyle(Paint.Style.STROKE);
-        paint.setStrokeCap(Paint.Cap.ROUND);
-        paint.setAntiAlias(true);
-
-        canvas.drawArc(oval, START_ANGLE, sweepAngle, false, paint);
     }
 
     /**
@@ -169,17 +159,15 @@ public class CircleTimerView extends SurfaceView implements SurfaceHolder.Callba
             Canvas canvas;
 
             while (mRunning) {
-                if (mVisible) {
-                    canvas = null;
-                    try {
-                        canvas = this.mSurfaceHolder.lockCanvas(null);
-                        synchronized (this.mSurfaceHolder) {
-                            drawCircle(canvas);
-                        }
-                    } finally {
-                        if (canvas != null) {
-                            this.mSurfaceHolder.unlockCanvasAndPost(canvas);
-                        }
+                canvas = null;
+                try {
+                    canvas = this.mSurfaceHolder.lockCanvas(null);
+                    synchronized (this.mSurfaceHolder) {
+                        drawCircle(canvas);
+                    }
+                } finally {
+                    if (canvas != null) {
+                        this.mSurfaceHolder.unlockCanvasAndPost(canvas);
                     }
                 }
             }
