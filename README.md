@@ -1,3 +1,5 @@
+[![Build Status](https://magnum.travis-ci.com/Crapoo/pomodoro.svg?token=yJBmbVBshhaMztbgxQd2&branch=master)](https://magnum.travis-ci.com/Crapoo/pomodoro)
+
 # Pomodoro
 Pomodoro Technique app for Android
 
