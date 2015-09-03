@@ -134,6 +134,11 @@ public class CircleTimerView extends SurfaceView implements SurfaceHolder.Callba
             paint.setAntiAlias(true);
 
             canvas.drawArc(oval, START_ANGLE, sweepAngle, false, paint);
+
+            /* Elapsed time */
+            paint.setAlpha(100);
+            canvas.drawArc(oval, START_ANGLE, 360, false, paint);
+
         } catch (NullPointerException nPE) {
             Log.e(TAG, nPE.getMessage());
         }
