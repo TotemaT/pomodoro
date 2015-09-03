@@ -74,7 +74,18 @@ public class TimerActivity extends AppCompatActivity {
         linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                timer();
+                if (!mTimerStarted) {
+                    startTimer();
+                } else {
+                    pauseTimer();
+                }
+            }
+        });
+        linearLayout.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                stopTimer();
+                return true;
             }
         });
         mMinutesTv = (TextView) findViewById(R.id.minutes_textview);
@@ -112,24 +123,11 @@ public class TimerActivity extends AppCompatActivity {
     }
 
     /**
-     * Starts or stops the timer according to its current state.
-     */
-    public void timer() {
-        if (!mTimerStarted) {
-            startTimer();
-        } else {
-            stopTimer();
-        }
-    }
-
-    /**
      * Starts the timer.
      */
     public void startTimer() {
         Log.d(TAG, "Start timer");
         mTimerStarted = true;
-        mTimerCurrentTime = TIMER_START_TIME;
-        resetUI();
         mHandler = new Handler();
         mRunnable = new Runnable() {
             @Override
@@ -151,11 +149,22 @@ public class TimerActivity extends AppCompatActivity {
     }
 
     /**
+     * Pauses the timer, allowing to restart from the same time.
+     */
+    public void pauseTimer() {
+        Log.d(TAG, "Pause timer");
+        mTimerStarted = false;
+        mHandler.removeCallbacks(mRunnable);
+    }
+
+    /**
      * Stops the timer.
      */
     public void stopTimer() {
         Log.d(TAG, "Stop timer");
         mTimerStarted = false;
+        mTimerCurrentTime = TIMER_START_TIME;
+        resetUI();
         mHandler.removeCallbacks(mRunnable);
     }
 
