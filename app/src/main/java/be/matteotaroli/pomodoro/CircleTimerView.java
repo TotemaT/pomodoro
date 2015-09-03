@@ -114,10 +114,10 @@ public class CircleTimerView extends SurfaceView implements SurfaceHolder.Callba
             float centerY = height / 2;
 
             if (width > height) {
-                height *= 0.8f;
+                height *= 0.9f;
                 width = height;
             } else {
-                width *= 0.8f;
+                width *= 0.9f;
                 height = width;
             }
 
