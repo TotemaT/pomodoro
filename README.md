@@ -13,8 +13,9 @@ To read more about it, go check [Wikipedia](https://en.wikipedia.org/wiki/Pomodo
 ## How to use the app?
 It's really easy.
 
-Once the app is launched, all you have to do is click anywhere within the circle. This will start the time and you can then start working.
-If you need to pause the timer for whatever reason, just click again. If you want to reset the timer, press on hold until the phone vibrates.
+- To start the timer, click inside the circle, on the timer itself (and then, go to work!).
+- To pause the timer for whatever reason, just click on it again. 
+- To reset the timer, press and hold until the phone vibrates, then you can decide to restart (or not).
 
 Once the timer runs off, the vibrator will remind you it's time to take a break.
 
