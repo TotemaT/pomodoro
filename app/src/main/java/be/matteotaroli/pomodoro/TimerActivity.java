@@ -28,6 +28,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 /**
@@ -64,11 +65,13 @@ public class TimerActivity extends AppCompatActivity {
             Window window = this.getWindow();
             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.setStatusBarColor(getResources().getColor(R.color.BackgroundColorDarker));
+            window.setStatusBarColor(getResources().getColor(R.color.secondary_colour));
         }
 
         mCircleTimerView = (CircleTimerView) findViewById(R.id.circle_timerview);
-        mCircleTimerView.setOnClickListener(new View.OnClickListener() {
+
+        LinearLayout linearLayout = (LinearLayout) findViewById(R.id.linearlayout);
+        linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 timer();
