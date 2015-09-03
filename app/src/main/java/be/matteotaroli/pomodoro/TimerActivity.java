@@ -55,13 +55,13 @@ public class TimerActivity extends AppCompatActivity {
     private static final long[] VIBRATOR_PATTERN = {0, 1500, 500, 1500, 500, 1500};
 
     @Override
-    @TargetApi(21)
+    @TargetApi(22)
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timer);
 
         /* Set status bar color on KitKat+ */
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
             Window window = this.getWindow();
             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
