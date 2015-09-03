@@ -140,7 +140,7 @@ public class CircleTimerView extends SurfaceView implements SurfaceHolder.Callba
             canvas.drawArc(oval, START_ANGLE, 360, false, paint);
 
         } catch (NullPointerException nPE) {
-            Log.e(TAG, nPE.getMessage());
+
         }
     }
 

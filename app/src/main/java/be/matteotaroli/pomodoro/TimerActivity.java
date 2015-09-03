@@ -37,6 +37,8 @@ import android.widget.TextView;
 
 public class TimerActivity extends AppCompatActivity {
     private static final String TAG = "TimerActivity";
+    private static final String INDEX_CURRENT_TIME = "CurrentTime";
+    private static final String INDEX_TIMER_STATE = "TimerState";
 
     /* UI elements */
     private TextView mMinutesTv;
@@ -55,13 +57,13 @@ public class TimerActivity extends AppCompatActivity {
     private static final long[] VIBRATOR_PATTERN = {0, 1500, 500, 1500, 500, 1500};
 
     @Override
-    @TargetApi(22)
+    @TargetApi(21)
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timer);
 
-        /* Set status bar color on KitKat+ */
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
+        /* Set status bar color on Lollipop+ */
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Window window = this.getWindow();
             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -91,10 +93,25 @@ public class TimerActivity extends AppCompatActivity {
         mMinutesTv = (TextView) findViewById(R.id.minutes_textview);
         mSecondsTv = (TextView) findViewById(R.id.seconds_textview);
 
-        mTimerCurrentTime = TIMER_START_TIME;
-        mTimerStarted = false;
+        if (savedInstanceState != null) {
+            mTimerCurrentTime = savedInstanceState.getInt(INDEX_CURRENT_TIME);
+            mTimerStarted = savedInstanceState.getBoolean(INDEX_TIMER_STATE);
+            updateUI(mTimerCurrentTime);
+            updateCircleView();
+            startTimer();
+        } else {
+            mTimerCurrentTime = TIMER_START_TIME;
+            mTimerStarted = false;
+            resetUI();
+        }
+    }
 
-        resetUI();
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Log.d(TAG, "saving : " + mTimerCurrentTime + " at " + mTimerCurrentTime);
+        outState.putInt(INDEX_CURRENT_TIME, mTimerCurrentTime);
+        outState.putBoolean(INDEX_TIMER_STATE, mTimerStarted);
     }
 
     @Override
@@ -128,7 +145,9 @@ public class TimerActivity extends AppCompatActivity {
     public void startTimer() {
         Log.d(TAG, "Start timer");
         mTimerStarted = true;
-        mHandler = new Handler();
+        if (mHandler == null) {
+            mHandler = new Handler();
+        }
         mRunnable = new Runnable() {
             @Override
             public void run() {
