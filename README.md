@@ -1,6 +1,6 @@
 ![Logo](app/src/main/res/drawable-xhdpi/pomodoro.png)
 
-[![Build Status](https://magnum.travis-ci.com/Crapoo/pomodoro.svg?token=yJBmbVBshhaMztbgxQd2&branch=master)](https://magnum.travis-ci.com/Crapoo/pomodoro)
+[![Build Status](https://travis-ci.org/Crapoo/pomodoro.svg)](https://travis-ci.org/Crapoo/pomodoro) ![License GPL3](https://img.shields.io/github/license/Crapoo/Pomodoro.svg)
 
 # Pomodoro
 Pomodoro Technique app for Android
