@@ -41,7 +41,7 @@ public class Timer {
 
     /* Timer constants */
     private static final long[] VIBRATOR_PATTERN = {0, 1500, 500, 1500, 500, 1500};
-    public static final int TOTAL_TIME = 10;
+    public static final int TOTAL_TIME = 25 * 60;
 
     /* Activity using the timer */
     private TimerActivity mActivity;
