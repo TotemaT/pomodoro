@@ -1,6 +1,7 @@
 <resources>
-    <string name="app_name">Pomodoro</string>
+    <string name="app_name" translatable="false">Pomodoro</string>
 
     <string name="time_is_up">Time is up. Good work, time to take a break!</string>
-    <string name="logo_description">Logo representing a tomato Timer</string>
+    <string name="logo_description">Pomodoro Logo</string>
+    <string name="notification_text" translatable="false">%1$s : %2$s</string>
 </resources>

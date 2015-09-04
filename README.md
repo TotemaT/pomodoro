@@ -36,5 +36,5 @@ If you're not, I'll add a link to download it from the PlayStore as soon as it h
 There are still a few things to do before a first release :
 
 - [ ] Add intro activity to quickly explain how the app works.
-- [ ] Add toast when the timer runs off.
-- [ ] Add notification while the timer is on.
+- [x] Add toast when the timer runs off.
+- [x] Add notification while the timer is on.
