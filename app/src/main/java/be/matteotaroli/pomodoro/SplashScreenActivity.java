@@ -29,10 +29,8 @@ import android.support.v7.app.AppCompatActivity;
  */
 
 public class SplashScreenActivity extends AppCompatActivity {
-    /* Used to know if the changelog should be shown */
-    private static final String PREF_LAST_VERSION_USED = "be.matteotaroli.pomodoro.lastVersionUsed";
     /* Used to know is the introduction should be shown */
-    private static final String PREF_FIRST_TIME = "be.matteotaroli.pomodoro.firstTimeO";
+    private static final String PREF_FIRST_TIME = "be.matteotaroli.pomodoro.firstTime";
     private static final int SPLASH_TIMEOUT = 2000;
 
     @Override
@@ -46,6 +44,8 @@ public class SplashScreenActivity extends AppCompatActivity {
                 Intent intent;
 
                 if (getPreferences(Context.MODE_PRIVATE).getBoolean(PREF_FIRST_TIME, true)) {
+                    getPreferences(Context.MODE_PRIVATE).edit()
+                            .putBoolean(PREF_FIRST_TIME, false).apply();
                     intent = new Intent(SplashScreenActivity.this, IntroActivity.class);
                 } else {
                     intent = new Intent(SplashScreenActivity.this, TimerActivity.class);
