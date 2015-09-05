@@ -2,4 +2,9 @@
 <resources>
     <string name="time_is_up">Temps écoulé. Beau travail, il est temps de faire une pause!</string>
     <string name="logo_description">Logo de Pomodoro</string>
+    <string name="intro_welcome">Bienvenue!</string>
+    <string name="intro_before_starting">Avant de commencer, jetons un rapide coup d\'oeil au fonctionnement de cette application.</string>
+    <string name="intro_easy">C\'est facile!</string>
+    <string name="intro_explaination_1">Pour démarrer le timer, cliquez simplement dessus.</string>
+    <string name="intro_button">Commencons!</string>
 </resources>

@@ -18,6 +18,7 @@
 
 package be.matteotaroli.pomodoro;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -28,19 +29,28 @@ import android.support.v7.app.AppCompatActivity;
  */
 
 public class SplashScreenActivity extends AppCompatActivity {
-
+    /* Used to know if the changelog should be shown */
+    private static final String PREF_LAST_VERSION_USED = "be.matteotaroli.pomodoro.lastVersionUsed";
+    /* Used to know is the introduction should be shown */
+    private static final String PREF_FIRST_TIME = "be.matteotaroli.pomodoro.firstTimeO";
     private static final int SPLASH_TIMEOUT = 2000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.splashscreen_layout);
+        setContentView(R.layout.activity_splashscreen);
 
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent i = new Intent(SplashScreenActivity.this, TimerActivity.class);
-                startActivity(i);
+                Intent intent;
+
+                if (getPreferences(Context.MODE_PRIVATE).getBoolean(PREF_FIRST_TIME, true)) {
+                    intent = new Intent(SplashScreenActivity.this, IntroActivity.class);
+                } else {
+                    intent = new Intent(SplashScreenActivity.this, TimerActivity.class);
+                }
+                startActivity(intent);
                 finish();
             }
         }, SPLASH_TIMEOUT);
