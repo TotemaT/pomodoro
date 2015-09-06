@@ -114,7 +114,6 @@ public class Timer {
     public void pause() {
         mStarted = false;
         mHandler.removeCallbacks(mRunnable);
-        mActivity.hideNotification();
     }
 
     public void stop() {

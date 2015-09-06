@@ -120,7 +120,6 @@ public class TimerActivity extends AppCompatActivity {
      * Starts the timer.
      */
     public void startTimer() {
-        Log.d(TAG, "Start timer");
         mTimer.start();
     }
 
@@ -129,14 +128,16 @@ public class TimerActivity extends AppCompatActivity {
      */
     public void pauseTimer() {
         mTimer.pause();
+        hideNotification();
     }
 
     /**
      * Stops the timer.
      */
     public void stopTimer() {
-        Log.d(TAG, "Stop timer");
         mTimer.stop();
+        hideNotification();
+        resetUI();
     }
 
     public void updateCircleView() {
