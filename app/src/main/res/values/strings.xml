@@ -9,4 +9,9 @@
     <string name="intro_easy">It\'s easy!</string>
     <string name="intro_explaination_1">To start the timer, simply click on it.</string>
     <string name="intro_button">Let\'s start!</string>
+    <string name="intro_skip">Skip</string>
+    <string name="lets_start">Let\'s start!</string>
+    <string name="intro_end_title">That\'s all!</string>
+    <string name="intro_end_text">You can now start the timer and work. :)</string>
+    <string name="intro_next">Next</string>
 </resources>

@@ -18,16 +18,9 @@
 
 package be.matteotaroli.pomodoro;
 
-import android.annotation.TargetApi;
-import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.Button;
 
 import com.viewpagerindicator.CirclePageIndicator;
 
@@ -37,37 +30,21 @@ import com.viewpagerindicator.CirclePageIndicator;
 
 public class IntroActivity extends AppCompatActivity {
 
+    private ViewPager mPager;
 
     @Override
-    @TargetApi(21)
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_intro);
 
-         /* Set status bar color on Lollipop+ */
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Window window = this.getWindow();
-            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.setStatusBarColor(getResources().getColor(R.color.secondary_colour));
-        }
-
-        ViewPager viewPager = (ViewPager) findViewById(R.id.intro_viewPager);
+        mPager = (ViewPager) findViewById(R.id.intro_viewPager);
         CirclePageIndicator pageIndicator = (CirclePageIndicator) findViewById(R.id.intro_indicator);
 
-        viewPager.setAdapter(new IntroAdapter(getSupportFragmentManager()));
-        pageIndicator.setViewPager(viewPager);
+        mPager.setAdapter(new IntroAdapter(getSupportFragmentManager()));
+        pageIndicator.setViewPager(mPager);
+    }
 
-        Button button = (Button) findViewById(R.id.intro_button);
-        if (button != null) {
-            button.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(IntroActivity.this, TimerActivity.class);
-                    startActivity(intent);
-                    finish();
-                }
-            });
-        }
+    public ViewPager getPager() {
+        return mPager;
     }
 }

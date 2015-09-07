@@ -3,14 +3,20 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="android:background">@color/primary_colour</item>
     </style>
 
-    <style name="SplashTheme" parent="AppTheme">
+    <style name="NoActionBarTheme" parent="AppTheme">
         <item name="android:windowNoTitle">true</item>
         <item name="windowActionBar">false</item>
         <item name="android:windowFullscreen">true</item>
         <item name="android:windowContentOverlay">@null</item>
+    </style>
+
+    <style name="SplashTheme" parent="NoActionBarTheme">
+        <item name="android:background">@color/primary_colour</item>
+    </style>
+
+    <style name="IntroTheme" parent="NoActionBarTheme">
     </style>
 
     <style name="TimerTextView">
@@ -20,13 +26,29 @@
         <item name="android:layout_height">wrap_content</item>
     </style>
 
+    <style name="IntroCardView" parent="CardView.Light">
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_margin">16dp</item>
+        <item name="cardCornerRadius">5dp</item>
+    </style>
+
     <style name="IntroTextView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_margin">32dp</item>
+        <item name="android:textColor">@color/primary_colour</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="IntroButton">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginLeft">32dp</item>
         <item name="android:layout_marginRight">32dp</item>
-        <item name="android:layout_marginTop">32dp</item>
-        <item name="android:textColor">#FFF</item>
+        <item name="android:layout_marginTop">16dp</item>
+        <item name="android:layout_marginBottom">16dp</item>
+        <item name="android:textColor">@color/primary_colour</item>
         <item name="android:gravity">center</item>
     </style>
 </resources>

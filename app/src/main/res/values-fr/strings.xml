@@ -7,4 +7,9 @@
     <string name="intro_easy">C\'est facile!</string>
     <string name="intro_explaination_1">Pour démarrer le timer, cliquez simplement dessus.</string>
     <string name="intro_button">Commencons!</string>
+    <string name="intro_skip">Sauter</string>
+    <string name="lets_start">Allons-y!</string>
+    <string name="intro_end_title">C\'est tout!</string>
+    <string name="intro_end_text">Vous pouvez maintenant lancer le minuteur et aller travailler. ;)</string>
+    <string name="intro_next">Suivant</string>
 </resources>

@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".TimerActivity">
+    tools:context=".TimerActivity"
+    android:background="@color/primary_colour">
 
     <be.matteotaroli.pomodoro.CircleTimerView
         android:id="@+id/circle_timerview"
