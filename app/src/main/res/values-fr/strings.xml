@@ -5,11 +5,13 @@
     <string name="intro_welcome">Bienvenue!</string>
     <string name="intro_before_starting">Avant de commencer, jetons un rapide coup d\'oeil au fonctionnement de cette application.</string>
     <string name="intro_easy">C\'est facile!</string>
-    <string name="intro_explaination_1">Pour démarrer le timer, cliquez simplement dessus.</string>
+    <string name="intro_explanation_1">1. Pour lancer le minuteur, cliquez dessus.\n2. Pour pauser le minuteur, cliquez à nouveau.\n3. Pour remettre le minuteur à zéro, restez appuyé dessus.</string>
     <string name="intro_button">Commencons!</string>
     <string name="intro_skip">Sauter</string>
     <string name="lets_start">Allons-y!</string>
     <string name="intro_end_title">C\'est tout!</string>
     <string name="intro_end_text">Vous pouvez maintenant lancer le minuteur et aller travailler. ;)</string>
     <string name="intro_next">Suivant</string>
+    <string name="pomodoro_explanation">La Technique Pomodoro est une technique de gestion du temps utilisant un minuteur pour découper le travail en périodes de 25 minutes, entrecoupées de courtes pauses.</string>
+    <string name="what_is_it">Qu\'est ce que Pomodoro?</string>
 </resources>

@@ -35,6 +35,15 @@ If you're not, I'll add a link to download it from the PlayStore as soon as it h
 ## What's left before a release?
 There are still a few things to do before a first release :
 
-- [ ] Add intro activity to quickly explain how the app works.
+###v0.1.0
+- [x] Add intro activity to quickly explain how the app works.
+	- [x] Finish pages for v0.1.0
+	- [ ] Add all pictures
 - [x] Add toast when the timer runs off.
 - [x] Add notification while the timer is on.
+
+###v0.2.0
+- [ ] Add settings
+	- [ ] Allow to change the time
+	- [ ] Allow to put the phone in plane mode automatically when the timer is on
+- [ ] Update intro accordingly to changes

@@ -7,11 +7,13 @@
     <string name="intro_welcome">Welcome!</string>
     <string name="intro_before_starting">Before starting, let\'s take a quick look at the way this app works.</string>
     <string name="intro_easy">It\'s easy!</string>
-    <string name="intro_explaination_1">To start the timer, simply click on it.</string>
+    <string name="intro_explanation_1">1. To start the timer, simply click on it.\n2. To pause the timer, click it again.\n3. To reset the timer, click and hold on it.</string>
     <string name="intro_button">Let\'s start!</string>
     <string name="intro_skip">Skip</string>
     <string name="lets_start">Let\'s start!</string>
     <string name="intro_end_title">That\'s all!</string>
     <string name="intro_end_text">You can now start the timer and work. :)</string>
     <string name="intro_next">Next</string>
+    <string name="what_is_it">What is Pomodoro?</string>
+    <string name="pomodoro_explanation">The Pomodoro Technique is a time management method using a timer to break down work into 25-minute-long intervals, separated by short breaks.</string>
 </resources>

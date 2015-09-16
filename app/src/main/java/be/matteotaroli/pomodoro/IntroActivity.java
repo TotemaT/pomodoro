@@ -25,7 +25,7 @@ import android.support.v7.app.AppCompatActivity;
 import com.viewpagerindicator.CirclePageIndicator;
 
 /**
- * Shows a quick explaination of the way the app works, the first time the user launch the app
+ * Shows a quick explanation of the way the app works, the first time the user launch the app
  */
 
 public class IntroActivity extends AppCompatActivity {

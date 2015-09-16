@@ -38,8 +38,9 @@ public class IntroFragment extends Fragment {
     private int mPage;
     private ViewPager mPager;
     private int[][] pages = {
-            {R.string.intro_welcome, R.string.intro_before_starting},
-            {R.string.intro_easy, R.string.intro_explaination_1}
+            {R.string.intro_welcome, R.string.intro_before_starting, R.drawable.pomodoro, R.string.logo_description},
+            {R.string.what_is_it, R.string.pomodoro_explanation},
+            {R.string.intro_easy, R.string.intro_explanation_1}
     };
 
     public static IntroFragment newInstance(int page) {
@@ -98,6 +99,8 @@ public class IntroFragment extends Fragment {
 
             titleTv.setText(R.string.intro_end_title);
             textTv.setText(R.string.intro_end_text);
+            pictureIV.setImageResource(R.drawable.pomodoro);
+            pictureIV.setContentDescription(getResources().getString(R.string.logo_description));
         } else {
             /* Any other page */
             skipTv.setOnClickListener(skipIntro);
@@ -106,14 +109,11 @@ public class IntroFragment extends Fragment {
 
             titleTv.setText(pages[mPage][0]);
             textTv.setText(pages[mPage][1]);
-        }
 
-        if (mPage == 0 || mPage == IntroAdapter.PAGE_COUNT - 1) {
-            /* First or last page shows the logo */
-            pictureIV.setImageResource(R.drawable.pomodoro);
-            pictureIV.setContentDescription(getResources().getString(R.string.logo_description));
-        } else {
-            /* Other pages should have a picture related to what the page says */
+        /*  TODO  - v 0.1.0 - add pictures and uncomment those lines
+            pictureIV.setImageResource(pages[mPage][2]);
+            pictureIV.setContentDescription(getResources().getString(pages[mPage][3]));
+        */
         }
 
         view.setTag(mPage);
