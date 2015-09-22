@@ -22,8 +22,10 @@ import android.annotation.TargetApi;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
@@ -42,16 +44,27 @@ import android.widget.TextView;
 
 public class TimerActivity extends AppCompatActivity {
     private static final String TAG = "TimerActivity";
-    private static final int NOTIFICATION_ID = 0;
     private static final String PREF_TOTAL_TIME = "be.matteotaroli.pomodoro.totalTime";
+    public static final String IS_LONG_CLICK_EXTRA = "isLongCLick";
 
     /* UI elements */
     private TextView mMinutesTv;
     private TextView mSecondsTv;
     private CircleTimerView mCircleTimerView;
 
-    /* Timer*/
-    private Timer mTimer;
+    /* Timer constants */
+    public static final long[] VIBRATOR_PATTERN = {0, 1500, 500, 1500, 500, 1500};
+    public static final int TOTAL_TIME = 25 * 60;
+
+    /* Timer */
+    private int mTotalTime;
+    private Intent timerIntent;
+    private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            updateUI(intent.getIntExtra(TimerService.CURRENT_TIME_EXTRA, 0));
+        }
+    };
 
     @Override
     @TargetApi(21)
@@ -67,41 +80,52 @@ public class TimerActivity extends AppCompatActivity {
             window.setStatusBarColor(getResources().getColor(R.color.secondary_colour));
         }
 
-        int totalTime = getPreferences(Context.MODE_PRIVATE)
-                .getInt(PREF_TOTAL_TIME, Timer.TOTAL_TIME);
+        mTotalTime = getPreferences(Context.MODE_PRIVATE)
+                .getInt(PREF_TOTAL_TIME, TOTAL_TIME);
+        timerIntent = new Intent(this, TimerService.class);
+        timerIntent.putExtra(TimerService.TIME_EXTRA, mTotalTime);
 
-        mTimer = Timer.get(this, totalTime);
         mCircleTimerView = (CircleTimerView) findViewById(R.id.circle_timerview);
 
         LinearLayout linearLayout = (LinearLayout) findViewById(R.id.linearlayout);
         linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!mTimer.isStarted()) {
-                    startTimer();
-                } else {
-                    pauseTimer();
-                }
+                timerIntent.putExtra(IS_LONG_CLICK_EXTRA, false);
+                startService(timerIntent);
             }
         });
         linearLayout.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                stopTimer();
+                timerIntent.putExtra(IS_LONG_CLICK_EXTRA, true);
+                startService(timerIntent);
+                resetUI();
                 return true;
             }
         });
         mMinutesTv = (TextView) findViewById(R.id.minutes_textview);
         mSecondsTv = (TextView) findViewById(R.id.seconds_textview);
-        updateUI(mTimer.getCurrentTime());
+        updateUI(timerIntent.getIntExtra(TimerService.TIME_EXTRA, mTotalTime));
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        registerReceiver(mBroadcastReceiver, new IntentFilter(TimerService.ACTION));
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver(mBroadcastReceiver);
     }
 
     /**
      * Resets the timer to the start time.
      */
     public void resetUI() {
-        updateUI(mTimer.getTotalTime());
-        updateCircleView();
+        updateUI(TOTAL_TIME);
     }
 
     /**
@@ -109,78 +133,22 @@ public class TimerActivity extends AppCompatActivity {
      *
      * @param timeInSeconds Actual time in seconds
      */
-    public void updateUI(long timeInSeconds) {
+    public void updateUI(int timeInSeconds) {
         int minutes = (int) timeInSeconds / 60;
         int seconds = (int) timeInSeconds % 60;
         mMinutesTv.setText(String.format("%02d", minutes));
         mSecondsTv.setText(String.format("%02d", seconds));
+        updateCircleView(timeInSeconds);
     }
 
-    /**
-     * Starts the timer.
-     */
-    public void startTimer() {
-        mTimer.start();
-    }
-
-    /**
-     * Pauses the timer, allowing to restart from the same time.
-     */
-    public void pauseTimer() {
-        mTimer.pause();
-        hideNotification();
-    }
-
-    /**
-     * Stops the timer.
-     */
-    public void stopTimer() {
-        mTimer.stop();
-        hideNotification();
-        resetUI();
-    }
-
-    public void updateCircleView() {
+    public void updateCircleView(final int timeInSeconds) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                float sweepAngle = 360 * (float) mTimer.getCurrentTime() / (float) mTimer.getTotalTime();
+                float sweepAngle =
+                        360 * (float) timeInSeconds / (float) mTotalTime;
                 mCircleTimerView.setSweepAngle(sweepAngle);
             }
         });
-    }
-
-
-    public void showNotification() {
-        Intent intent = new Intent(this, TimerActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
-                Intent.FLAG_ACTIVITY_CLEAR_TASK);
-
-        PendingIntent pendingIntent = PendingIntent
-                .getActivity(getApplicationContext(), 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
-        Resources resources = getResources();
-
-        String minutes = String.format("%02d", mTimer.getCurrentTime() / 60);
-        String seconds = String.format("%02d", mTimer.getCurrentTime() % 60);
-
-        Notification notification = new NotificationCompat.Builder(this)
-                .setTicker(resources.getString(R.string.app_name))
-                .setSmallIcon(R.drawable.pomodoro_notification)
-                .setContentTitle(resources.getString(R.string.app_name))
-                .setContentText(resources.getString(R.string.notification_text, minutes, seconds))
-                .setContentIntent(pendingIntent)
-                .setAutoCancel(false)
-                .build();
-        notification.flags |= Notification.FLAG_NO_CLEAR | Notification.FLAG_ONGOING_EVENT;
-
-        NotificationManager notificationManager =
-                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.notify(TAG, NOTIFICATION_ID, notification);
-    }
-
-    public void hideNotification() {
-        NotificationManager notificationManager =
-                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.cancel(TAG, NOTIFICATION_ID);
     }
 }
