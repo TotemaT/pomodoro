@@ -62,7 +62,7 @@ public class TimerActivity extends AppCompatActivity {
     private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            updateUI(intent.getIntExtra(TimerService.CURRENT_TIME_EXTRA, 0));
+            updateUI(intent.getLongExtra(TimerService.CURRENT_TIME_EXTRA, 0));
         }
     };
 
@@ -133,7 +133,7 @@ public class TimerActivity extends AppCompatActivity {
      *
      * @param timeInSeconds Actual time in seconds
      */
-    public void updateUI(int timeInSeconds) {
+    public void updateUI(long timeInSeconds) {
         int minutes = (int) timeInSeconds / 60;
         int seconds = (int) timeInSeconds % 60;
         mMinutesTv.setText(String.format("%02d", minutes));
@@ -141,7 +141,7 @@ public class TimerActivity extends AppCompatActivity {
         updateCircleView(timeInSeconds);
     }
 
-    public void updateCircleView(final int timeInSeconds) {
+    public void updateCircleView(final long timeInSeconds) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {

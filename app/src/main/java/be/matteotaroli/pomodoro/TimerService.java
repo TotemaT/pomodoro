@@ -31,7 +31,10 @@ import android.os.IBinder;
 import android.os.Vibrator;
 import android.support.annotation.Nullable;
 import android.support.v7.app.NotificationCompat;
+import android.util.Log;
 import android.widget.Toast;
+
+import java.util.Date;
 
 /**
  * Handles the timer and broadcast the current time to TimerActivity.
@@ -51,10 +54,12 @@ public class TimerService extends Service {
     private Runnable sendUpdatesToUI = new Runnable() {
         @Override
         public void run() {
-            mCurrentTime--;
-            intent.putExtra(CURRENT_TIME_EXTRA, mCurrentTime);
+            mTimeLeft = mTotalTime + mDelay - (new Date().getTime() - mStartDate.getTime()) / 1000;
+
+            intent.putExtra(CURRENT_TIME_EXTRA, mTimeLeft);
             sendBroadcast(intent);
-            if (mCurrentTime > 0) {
+            if (mTimeLeft > 0) {
+                Log.i(TAG, "time left : " + mTimeLeft + " at " + new Date());
                 showNotification();
                 mHandler.postDelayed(this, 1000);
             } else {
@@ -69,7 +74,12 @@ public class TimerService extends Service {
         }
     };
 
-    private int mCurrentTime;
+    private Date mStartDate;
+    private Date mPausedDate;
+    private long mDelay;
+    private long mTimeLeft;
+    /* TODO : In next version, allows the user to define the total time. */
+    private long mTotalTime;
     private boolean mRunning;
     private boolean mPaused;
 
@@ -103,19 +113,30 @@ public class TimerService extends Service {
             if (!mRunning) {
                 mRunning = true;
                 if (!mPaused) {
-                    mCurrentTime = intent.getIntExtra(TIME_EXTRA, TimerActivity.TOTAL_TIME);
+                    mTotalTime = intent.getIntExtra(TIME_EXTRA, TimerActivity.TOTAL_TIME);
+                    mStartDate = new Date();
+                    mDelay = 0;
+                    Log.i(TAG, "Started at " + mStartDate );
+                } else {
+                    mDelay += (new Date().getTime() - mPausedDate.getTime()) / 1000;
+                    Log.i(TAG, "Delayed by " + mDelay + "seconds");
+                    mPausedDate = null;
                 }
                 mPaused = false;
                 mHandler.postDelayed(sendUpdatesToUI, 1000);
             } else {
                 mRunning = false;
                 mPaused = true;
+                mPausedDate = new Date();
+                Log.i(TAG, "Paused at " + mPausedDate);
                 mHandler.removeCallbacks(sendUpdatesToUI);
             }
         } else {
             /* Stop */
             mRunning = false;
             mPaused = false;
+            mStartDate = null;
+            mPausedDate = null;
             mHandler.removeCallbacks(sendUpdatesToUI);
             hideNotification();
         }
@@ -137,8 +158,8 @@ public class TimerService extends Service {
                 .getActivity(getApplicationContext(), 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
         Resources resources = getResources();
 
-        String minutes = String.format("%02d", mCurrentTime / 60);
-        String seconds = String.format("%02d", mCurrentTime % 60);
+        String minutes = String.format("%02d", mTimeLeft / 60);
+        String seconds = String.format("%02d", mTimeLeft % 60);
 
         Notification notification = new NotificationCompat.Builder(this)
                 .setTicker(resources.getString(R.string.app_name))
