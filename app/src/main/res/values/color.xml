@@ -2,7 +2,4 @@
 <resources>
     <color name="primary_colour">#FF8E14</color>
     <color name="secondary_colour">#EE7D03</color>
-
-    <color name="intro_slide1_color">#FF0000</color>
-    <color name="intro_slide2_color">#00FF00</color>
 </resources>

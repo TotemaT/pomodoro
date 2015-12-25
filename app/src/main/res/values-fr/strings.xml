@@ -6,7 +6,6 @@
     <string name="intro_before_starting">Avant de commencer, jetons un rapide coup d\'oeil au fonctionnement de cette application.</string>
     <string name="intro_easy">C\'est facile!</string>
     <string name="intro_explanation_1">1. Pour lancer le minuteur, cliquez dessus.\n2. Pour pauser le minuteur, cliquez à nouveau.\n3. Pour remettre le minuteur à zéro, restez appuyé dessus.</string>
-    <string name="intro_button">Commencons!</string>
     <string name="intro_skip">Sauter</string>
     <string name="lets_start">Allons-y!</string>
     <string name="intro_end_title">C\'est tout!</string>

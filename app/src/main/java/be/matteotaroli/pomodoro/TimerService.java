@@ -42,7 +42,7 @@ import java.util.Date;
 public class TimerService extends Service {
 
     private static final String TAG = "TimerService";
-    public static final int NOTIFICATION_ID = 0;
+    private static final int NOTIFICATION_ID = 0;
     public static final String ACTION = "be.matteotaroli.pomodoro.timer";
     public static final String TIME_EXTRA = "totalTime";
     public static final String CURRENT_TIME_EXTRA = "currentTime";
@@ -50,7 +50,7 @@ public class TimerService extends Service {
 
     /* Timer elements */
     private final Handler mHandler = new Handler();
-    private Runnable sendUpdatesToUI = new Runnable() {
+    private final Runnable sendUpdatesToUI = new Runnable() {
         @Override
         public void run() {
             mTimeLeft = mTotalTime - (getTimeInSeconds() - mStartDate);

@@ -53,7 +53,7 @@ public class TimerActivity extends AppCompatActivity {
     /* Timer */
     private int mTotalTime;
     private Intent timerIntent;
-    private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
+    private final BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             updateUI(intent.getLongExtra(TimerService.CURRENT_TIME_EXTRA, 0));

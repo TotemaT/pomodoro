@@ -25,7 +25,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 /**
  * Takes care of the different introduction pages
  */
-public class IntroAdapter extends FragmentPagerAdapter {
+class IntroAdapter extends FragmentPagerAdapter {
     public static final int PAGE_COUNT = 4;
 
     public IntroAdapter(FragmentManager fragmentManager) {

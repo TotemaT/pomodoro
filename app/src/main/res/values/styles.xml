@@ -13,7 +13,6 @@
     </style>
 
     <style name="SplashTheme" parent="NoActionBarTheme">
-        <item name="android:background">@color/primary_colour</item>
     </style>
 
     <style name="IntroTheme" parent="NoActionBarTheme">

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="intro_before_starting">Przed rozpoczęciem, zobaczmy jak działa ta aplikacja.</string>
-    <string name="intro_button">Zacznijmy!</string>
     <string name="intro_easy">Nic trudnego!</string>
     <string name="intro_end_text">Możesz teraz uruchomić minutnik i zacząć pracować. :)</string>
     <string name="intro_end_title">To wszystko!</string>

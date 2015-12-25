@@ -37,7 +37,7 @@ public class IntroFragment extends Fragment {
 
     private int mPage;
     private ViewPager mPager;
-    private int[][] pages = {
+    private final int[][] pages = {
             {R.string.intro_welcome, R.string.intro_before_starting, R.drawable.pomodoro, R.string.logo_description},
             {R.string.what_is_it, R.string.pomodoro_explanation},
             {R.string.intro_easy, R.string.intro_explanation_1}

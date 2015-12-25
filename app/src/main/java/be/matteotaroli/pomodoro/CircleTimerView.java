@@ -35,7 +35,7 @@ import android.view.SurfaceView;
  */
 
 public class CircleTimerView extends SurfaceView implements SurfaceHolder.Callback {
-    public static final String TAG = "CircleTimerView";
+    private static final String TAG = "CircleTimerView";
 
     /* Arc angles */
     private static final float START_ANGLE = 0;
@@ -140,7 +140,7 @@ public class CircleTimerView extends SurfaceView implements SurfaceHolder.Callba
             canvas.drawArc(oval, START_ANGLE, 360, false, paint);
 
         } catch (NullPointerException nPE) {
-
+            Log.e(TAG, "Tried to draw on NULL canvas.");
         }
     }
 
