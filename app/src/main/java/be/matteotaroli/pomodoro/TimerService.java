@@ -54,7 +54,7 @@ public class TimerService extends Service {
     private Runnable sendUpdatesToUI = new Runnable() {
         @Override
         public void run() {
-            mTimeLeft = mTotalTime + mDelay - (new Date().getTime() - mStartDate.getTime()) / 1000;
+            mTimeLeft = mTotalTime - (new Date().getTime() / 1000 - mStartDate);
 
             intent.putExtra(CURRENT_TIME_EXTRA, mTimeLeft);
             sendBroadcast(intent);
@@ -74,9 +74,8 @@ public class TimerService extends Service {
         }
     };
 
-    private Date mStartDate;
-    private Date mPausedDate;
-    private long mDelay;
+    private long mStartDate;
+    private long mPausedDate;
     private long mTimeLeft;
     /* TODO : In next version, allows the user to define the total time. */
     private long mTotalTime;
@@ -114,20 +113,20 @@ public class TimerService extends Service {
                 mRunning = true;
                 if (!mPaused) {
                     mTotalTime = intent.getIntExtra(TIME_EXTRA, TimerActivity.TOTAL_TIME);
-                    mStartDate = new Date();
-                    mDelay = 0;
+                    mStartDate = new Date().getTime() / 1000;
                     Log.i(TAG, "Started at " + mStartDate );
                 } else {
-                    mDelay += (new Date().getTime() - mPausedDate.getTime()) / 1000;
-                    Log.i(TAG, "Delayed by " + mDelay + "seconds");
-                    mPausedDate = null;
+                    long delay = (new Date().getTime() / 1000) - mPausedDate;
+                    mTotalTime += delay;
+                    Log.i(TAG, "Delayed by " + delay + "seconds");
+                    mPausedDate = 0;
                 }
                 mPaused = false;
                 mHandler.postDelayed(sendUpdatesToUI, 1000);
             } else {
                 mRunning = false;
                 mPaused = true;
-                mPausedDate = new Date();
+                mPausedDate = new Date().getTime() / 1000;
                 Log.i(TAG, "Paused at " + mPausedDate);
                 mHandler.removeCallbacks(sendUpdatesToUI);
             }
@@ -135,8 +134,8 @@ public class TimerService extends Service {
             /* Stop */
             mRunning = false;
             mPaused = false;
-            mStartDate = null;
-            mPausedDate = null;
+            mStartDate = 0;
+            mPausedDate = 0;
             mHandler.removeCallbacks(sendUpdatesToUI);
             hideNotification();
         }
