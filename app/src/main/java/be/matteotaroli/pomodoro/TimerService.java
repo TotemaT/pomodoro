@@ -104,7 +104,10 @@ public class TimerService extends Service {
         return START_STICKY;
     }
 
-    public void start(Intent intent) {
+    private void start(Intent intent) {
+        if (intent == null) {
+            return;
+        }
         if (!intent.getBooleanExtra(TimerActivity.IS_LONG_CLICK_EXTRA, false)) {
             /* Play / pause */
             if (!mRunning) {
