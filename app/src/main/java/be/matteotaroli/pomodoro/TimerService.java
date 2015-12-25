@@ -127,6 +127,7 @@ public class TimerService extends Service {
                 mPaused = true;
                 mPausedDate = getTimeInSeconds();
                 mHandler.removeCallbacks(sendUpdatesToUI);
+                hideNotification();
             }
         } else {
             /* Stop */
@@ -144,6 +145,14 @@ public class TimerService extends Service {
     @Override
     public IBinder onBind(Intent intent) {
         return null;
+    }
+
+
+    @Override
+    public void onTaskRemoved(Intent rootIntent) {
+        super.onTaskRemoved(rootIntent);
+        hideNotification();
+        mHandler.removeCallbacks(sendUpdatesToUI);
     }
 
     public void showOngoingNotification() {
