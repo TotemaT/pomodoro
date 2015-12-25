@@ -19,19 +19,13 @@
 package be.matteotaroli.pomodoro;
 
 import android.annotation.TargetApi;
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.app.NotificationCompat;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -53,7 +47,7 @@ public class TimerActivity extends AppCompatActivity {
     private CircleTimerView mCircleTimerView;
 
     /* Timer constants */
-    public static final long[] VIBRATOR_PATTERN = {0, 1500, 500, 1500, 500, 1500};
+    public static final long[] VIBRATOR_PATTERN = {0, 750, 500, 750, 500, 750};
     public static final int TOTAL_TIME = 25 * 60;
 
     /* Timer */
@@ -119,6 +113,12 @@ public class TimerActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         unregisterReceiver(mBroadcastReceiver);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        resetUI();
     }
 
     /**

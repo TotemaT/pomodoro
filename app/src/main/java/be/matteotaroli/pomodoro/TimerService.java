@@ -31,7 +31,6 @@ import android.os.IBinder;
 import android.os.Vibrator;
 import android.support.annotation.Nullable;
 import android.support.v7.app.NotificationCompat;
-import android.util.Log;
 import android.widget.Toast;
 
 import java.util.Date;
@@ -54,22 +53,21 @@ public class TimerService extends Service {
     private Runnable sendUpdatesToUI = new Runnable() {
         @Override
         public void run() {
-            mTimeLeft = mTotalTime - (new Date().getTime() / 1000 - mStartDate);
+            mTimeLeft = mTotalTime - (getTimeInSeconds() - mStartDate);
 
             intent.putExtra(CURRENT_TIME_EXTRA, mTimeLeft);
             sendBroadcast(intent);
             if (mTimeLeft > 0) {
-                Log.i(TAG, "time left : " + mTimeLeft + " at " + new Date());
-                showNotification();
+                showOngoingNotification();
                 mHandler.postDelayed(this, 1000);
             } else {
                 mRunning = false;
                 mPaused = false;
-                hideNotification();
                 Vibrator mVibrator =
                         (Vibrator) getApplication().getSystemService(Activity.VIBRATOR_SERVICE);
                 mVibrator.vibrate(TimerActivity.VIBRATOR_PATTERN, -1);
                 Toast.makeText(TimerService.this, R.string.time_is_up, Toast.LENGTH_SHORT).show();
+                showFinishedNotification();
             }
         }
     };
@@ -113,12 +111,10 @@ public class TimerService extends Service {
                 mRunning = true;
                 if (!mPaused) {
                     mTotalTime = intent.getIntExtra(TIME_EXTRA, TimerActivity.TOTAL_TIME);
-                    mStartDate = new Date().getTime() / 1000;
-                    Log.i(TAG, "Started at " + mStartDate );
+                    mStartDate = getTimeInSeconds();
                 } else {
-                    long delay = (new Date().getTime() / 1000) - mPausedDate;
+                    long delay = getTimeInSeconds() - mPausedDate;
                     mTotalTime += delay;
-                    Log.i(TAG, "Delayed by " + delay + "seconds");
                     mPausedDate = 0;
                 }
                 mPaused = false;
@@ -126,8 +122,7 @@ public class TimerService extends Service {
             } else {
                 mRunning = false;
                 mPaused = true;
-                mPausedDate = new Date().getTime() / 1000;
-                Log.i(TAG, "Paused at " + mPausedDate);
+                mPausedDate = getTimeInSeconds();
                 mHandler.removeCallbacks(sendUpdatesToUI);
             }
         } else {
@@ -148,36 +143,49 @@ public class TimerService extends Service {
         return null;
     }
 
-    public void showNotification() {
+    public void showOngoingNotification() {
+        String minutes = String.format("%02d", mTimeLeft / 60);
+        String seconds = String.format("%02d", mTimeLeft % 60);
+        showNotification(getResources().getString(R.string.notification_text, minutes, seconds), false);
+    }
+
+    private void showFinishedNotification() {
+        showNotification(getResources().getString(R.string.time_is_up), true);
+    }
+
+    private void showNotification(String content, boolean dismiss) {
         Intent intent = new Intent(this, TimerActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
                 Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
         PendingIntent pendingIntent = PendingIntent
                 .getActivity(getApplicationContext(), 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
-        Resources resources = getResources();
 
-        String minutes = String.format("%02d", mTimeLeft / 60);
-        String seconds = String.format("%02d", mTimeLeft % 60);
+        Resources resources = getResources();
 
         Notification notification = new NotificationCompat.Builder(this)
                 .setTicker(resources.getString(R.string.app_name))
                 .setSmallIcon(R.drawable.pomodoro_notification)
                 .setContentTitle(resources.getString(R.string.app_name))
-                .setContentText(resources.getString(R.string.notification_text, minutes, seconds))
+                .setContentText(content)
                 .setContentIntent(pendingIntent)
                 .setAutoCancel(false)
                 .build();
-        notification.flags |= Notification.FLAG_NO_CLEAR | Notification.FLAG_ONGOING_EVENT;
-
+        if (!dismiss) {
+            notification.flags |= Notification.FLAG_NO_CLEAR | Notification.FLAG_ONGOING_EVENT;
+        }
         NotificationManager notificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.notify(TAG, NOTIFICATION_ID, notification);
     }
 
-    public void hideNotification() {
+    private void hideNotification() {
         NotificationManager notificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.cancel(TAG, NOTIFICATION_ID);
+    }
+
+    private long getTimeInSeconds() {
+        return new Date().getTime() / 1000;
     }
 }
