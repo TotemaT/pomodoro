@@ -104,6 +104,9 @@ public class TimerService extends Service {
         return START_STICKY;
     }
 
+    /**
+     * Start the service.
+     */
     private void start(Intent intent) {
         if (intent == null) {
             return;
@@ -155,16 +158,29 @@ public class TimerService extends Service {
         mHandler.removeCallbacks(sendUpdatesToUI);
     }
 
-    public void showOngoingNotification() {
+
+    /**
+     * Create and show the notification saying the timer is running.
+     */
+    private void showOngoingNotification() {
         String minutes = String.format("%02d", mTimeLeft / 60);
         String seconds = String.format("%02d", mTimeLeft % 60);
         showNotification(getResources().getString(R.string.notification_text, minutes, seconds), false);
     }
 
+    /**
+     * Create and show the notification warning that the time is up.
+     */
     private void showFinishedNotification() {
         showNotification(getResources().getString(R.string.time_is_up), true);
     }
 
+    /**
+     * Create a notification and add it to the notification center.
+     *
+     * @param content Content of the notification.
+     * @param dismiss If the notification should be dismissed when the user swipe it.
+     */
     private void showNotification(String content, boolean dismiss) {
         Intent intent = new Intent(this, TimerActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
@@ -191,12 +207,18 @@ public class TimerService extends Service {
         notificationManager.notify(TAG, NOTIFICATION_ID, notification);
     }
 
+    /**
+     * Hides any notification shown by the app.
+     */
     private void hideNotification() {
         NotificationManager notificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.cancel(TAG, NOTIFICATION_ID);
     }
 
+    /**
+     * Get current time in seconds.
+     */
     private long getTimeInSeconds() {
         return new Date().getTime() / 1000;
     }

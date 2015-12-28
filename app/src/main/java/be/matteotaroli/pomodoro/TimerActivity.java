@@ -141,6 +141,11 @@ public class TimerActivity extends AppCompatActivity {
         updateCircleView(timeInSeconds);
     }
 
+    /**
+     * Update the circle view with the correct angle corresponding to the time left.
+     *
+     * @param timeInSeconds Time left in seconds.
+     */
     public void updateCircleView(final long timeInSeconds) {
         runOnUiThread(new Runnable() {
             @Override
