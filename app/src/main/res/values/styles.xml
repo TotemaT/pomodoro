@@ -1,7 +1,7 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="actionBarStyle">@style/ActionBarStyle</item>
     </style>
 
@@ -21,13 +21,8 @@
 
     <style name="ActionBarStyle" parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
         <item name="background">@color/secondary_colour</item>
-        <item name="titleTextStyle">@style/ActionBarTitle</item>
     </style>
-
-    <style name="ActionBarTitle" parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Title">
-        <item name="android:textColor">#FFF</item>
-    </style>
-
+    
     <style name="TimerTextView">
         <item name="android:textSize">80sp</item>
         <item name="android:textColor">#FFF</item>

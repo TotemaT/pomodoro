@@ -26,11 +26,15 @@ import android.content.IntentFilter;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * Runs the timer and visually shows its progression.
@@ -101,6 +105,22 @@ public class TimerActivity extends AppCompatActivity {
         mMinutesTv = (TextView) findViewById(R.id.minutes_textview);
         mSecondsTv = (TextView) findViewById(R.id.seconds_textview);
         updateUI(timerIntent.getIntExtra(TimerService.TIME_EXTRA, mTotalTime));
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.activity_timer_menu, menu);
+
+        (menu.findItem(R.id.settings)).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+            /* TODO : Open settings */
+                Toast.makeText(TimerActivity.this, "Settings should open", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+        });
+        return true;
     }
 
     @Override

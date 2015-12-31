@@ -13,4 +13,5 @@
     <string name="intro_next">Suivant</string>
     <string name="pomodoro_explanation">La Technique Pomodoro est une technique de gestion du temps utilisant un minuteur pour découper le travail en périodes de 25 minutes, entrecoupées de courtes pauses.</string>
     <string name="what_is_it">Qu\'est ce que Pomodoro?</string>
+    <string name="settings">Paramètres</string>
 </resources>

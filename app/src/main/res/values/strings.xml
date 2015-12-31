@@ -15,4 +15,5 @@
     <string name="intro_next">Next</string>
     <string name="what_is_it">What is Pomodoro?</string>
     <string name="pomodoro_explanation">The Pomodoro Technique is a time management method using a timer to break down work into 25-minute-long intervals, separated by short breaks.</string>
+    <string name="settings">Settings</string>
 </resources>
