@@ -124,7 +124,7 @@ public class TimerService extends Service {
                     mPausedDate = 0;
                 }
                 mPaused = false;
-                mHandler.postDelayed(sendUpdatesToUI, 1000);
+                mHandler.post(sendUpdatesToUI);
             } else {
                 mRunning = false;
                 mPaused = true;
