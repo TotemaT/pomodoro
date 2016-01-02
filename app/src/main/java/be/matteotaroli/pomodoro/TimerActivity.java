@@ -21,10 +21,12 @@ package be.matteotaroli.pomodoro;
 import android.annotation.TargetApi;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.Window;
@@ -56,6 +58,9 @@ public class TimerActivity extends AppCompatActivity {
     private final BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
+            if (intent.getBooleanExtra(TimerService.IS_OVER_EXTRA, false)) {
+                showEndDialog();
+            }
             updateUI(intent.getLongExtra(TimerService.CURRENT_TIME_EXTRA, 0));
         }
     };
@@ -72,6 +77,10 @@ public class TimerActivity extends AppCompatActivity {
             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             window.setStatusBarColor(getResources().getColor(R.color.secondary_colour));
+        }
+
+        if (getIntent().getBooleanExtra(TimerService.IS_OVER_EXTRA, false)) {
+            showEndDialog();
         }
 
         mTotalTime = getPreferences(Context.MODE_PRIVATE)
@@ -101,6 +110,19 @@ public class TimerActivity extends AppCompatActivity {
         mMinutesTv = (TextView) findViewById(R.id.minutes_textview);
         mSecondsTv = (TextView) findViewById(R.id.seconds_textview);
         updateUI(timerIntent.getIntExtra(TimerService.TIME_EXTRA, mTotalTime));
+    }
+
+    private void showEndDialog() {
+        new AlertDialog.Builder(this)
+                .setMessage(R.string.time_is_up)
+                .setCancelable(false)
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        resetUI();
+                    }
+                })
+                .create().show();
     }
 
     @Override

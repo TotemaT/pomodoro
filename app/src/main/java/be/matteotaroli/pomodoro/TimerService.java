@@ -46,6 +46,8 @@ public class TimerService extends Service {
     public static final String ACTION = "be.matteotaroli.pomodoro.timer";
     public static final String TIME_EXTRA = "totalTime";
     public static final String CURRENT_TIME_EXTRA = "currentTime";
+    public static final String IS_OVER_EXTRA = "isOver";
+
     private Intent intent;
 
     /* Timer elements */
@@ -56,19 +58,21 @@ public class TimerService extends Service {
             mTimeLeft = mTotalTime - (getTimeInSeconds() - mStartDate);
 
             intent.putExtra(CURRENT_TIME_EXTRA, mTimeLeft);
-            sendBroadcast(intent);
             if (mTimeLeft > 0) {
                 showOngoingNotification();
                 mHandler.postDelayed(this, 1000);
+                intent.putExtra(IS_OVER_EXTRA, false);
             } else {
                 mRunning = false;
                 mPaused = false;
+                intent.putExtra(IS_OVER_EXTRA, true);
                 Vibrator mVibrator =
                         (Vibrator) getApplication().getSystemService(Activity.VIBRATOR_SERVICE);
                 mVibrator.vibrate(TimerActivity.VIBRATOR_PATTERN, -1);
                 Toast.makeText(TimerService.this, R.string.time_is_up, Toast.LENGTH_SHORT).show();
                 showFinishedNotification();
             }
+            sendBroadcast(intent);
         }
     };
 
@@ -179,12 +183,14 @@ public class TimerService extends Service {
      * Create a notification and add it to the notification center.
      *
      * @param content Content of the notification.
-     * @param dismiss If the notification should be dismissed when the user swipe it.
+     * @param isOver  If the time is up, also tells if the notification should be dismissed
+     *                when the user swipe it.
      */
-    private void showNotification(String content, boolean dismiss) {
+    private void showNotification(String content, boolean isOver) {
         Intent intent = new Intent(this, TimerActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
                 Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        intent.putExtra(IS_OVER_EXTRA, isOver);
 
         PendingIntent pendingIntent = PendingIntent
                 .getActivity(getApplicationContext(), 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
@@ -199,7 +205,7 @@ public class TimerService extends Service {
                 .setContentIntent(pendingIntent)
                 .setAutoCancel(false)
                 .build();
-        if (!dismiss) {
+        if (!isOver) {
             notification.flags |= Notification.FLAG_NO_CLEAR | Notification.FLAG_ONGOING_EVENT;
         }
         NotificationManager notificationManager =
