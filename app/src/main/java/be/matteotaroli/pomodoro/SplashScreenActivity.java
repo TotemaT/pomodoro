@@ -18,10 +18,11 @@
 
 package be.matteotaroli.pomodoro;
 
-import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 
 /**
@@ -30,7 +31,6 @@ import android.support.v7.app.AppCompatActivity;
 
 public class SplashScreenActivity extends AppCompatActivity {
     /* Used to know is the introduction should be shown */
-    private static final String PREF_FIRST_TIME = "be.matteotaroli.pomodoro.firstTime";
     private static final int SPLASH_TIMEOUT = 2000;
 
     @Override
@@ -42,10 +42,11 @@ public class SplashScreenActivity extends AppCompatActivity {
             @Override
             public void run() {
                 Intent intent;
-
-                if (getPreferences(Context.MODE_PRIVATE).getBoolean(PREF_FIRST_TIME, true)) {
-                    getPreferences(Context.MODE_PRIVATE).edit()
-                            .putBoolean(PREF_FIRST_TIME, false).apply();
+                PreferenceManager.setDefaultValues(SplashScreenActivity.this, R.xml.preferences, false);
+                SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(SplashScreenActivity.this);
+                if (sharedPref.getBoolean(getString(R.string.pref_first_time_key), true)) {
+                    sharedPref.edit()
+                            .putBoolean(getString(R.string.pref_first_time_key), false).apply();
                     intent = new Intent(SplashScreenActivity.this, IntroActivity.class);
                 } else {
                     intent = new Intent(SplashScreenActivity.this, TimerActivity.class);

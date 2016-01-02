@@ -25,6 +25,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -41,7 +42,6 @@ import android.widget.TextView;
 
 public class TimerActivity extends AppCompatActivity {
     private static final String TAG = "TimerActivity";
-    private static final String PREF_TOTAL_TIME = "be.matteotaroli.pomodoro.totalTime";
     public static final String IS_LONG_CLICK_EXTRA = "isLongCLick";
 
     /* UI elements */
@@ -77,11 +77,6 @@ public class TimerActivity extends AppCompatActivity {
             window.setStatusBarColor(getResources().getColor(R.color.secondary_colour));
         }
 
-        mTotalTime = getPreferences(Context.MODE_PRIVATE)
-                .getInt(PREF_TOTAL_TIME, TOTAL_TIME);
-        timerIntent = new Intent(this, TimerService.class);
-        timerIntent.putExtra(TimerService.TIME_EXTRA, mTotalTime);
-
         mCircleTimerView = (CircleTimerView) findViewById(R.id.circle_timerview);
 
         LinearLayout linearLayout = (LinearLayout) findViewById(R.id.linearlayout);
@@ -103,7 +98,6 @@ public class TimerActivity extends AppCompatActivity {
         });
         mMinutesTv = (TextView) findViewById(R.id.minutes_textview);
         mSecondsTv = (TextView) findViewById(R.id.seconds_textview);
-        updateUI(timerIntent.getIntExtra(TimerService.TIME_EXTRA, mTotalTime));
     }
 
     @Override
@@ -126,6 +120,13 @@ public class TimerActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         registerReceiver(mBroadcastReceiver, new IntentFilter(TimerService.ACTION));
+        String totalTimePref = PreferenceManager.getDefaultSharedPreferences(this)
+                .getString(getString(R.string.pref_total_time_key), null);
+
+        mTotalTime = totalTimePref == null ? TOTAL_TIME : Integer.parseInt(totalTimePref) * 60;
+        timerIntent = new Intent(this, TimerService.class);
+        timerIntent.putExtra(TimerService.TIME_EXTRA, mTotalTime);
+        resetUI();
     }
 
     @Override
@@ -143,7 +144,7 @@ public class TimerActivity extends AppCompatActivity {
      * Resets the timer to the start time.
      */
     public void resetUI() {
-        updateUI(TOTAL_TIME);
+        updateUI(mTotalTime);
     }
 
     /**

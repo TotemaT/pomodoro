@@ -20,4 +20,9 @@
     <string name="pref_plane_mode_summary">Turn the plane mode on while the timer is running. Allows you to fully focus on your work!</string>
     <string name="pref_notif_summary">Show a notification while the timer is running, allowing you to see the remaining time at all time.</string>
     <string name="pref_notif">Show notification</string>
+
+    <string name="pref_notif_key" translatable="false">pref_notif</string>
+    <string name="pref_plane_mode_key" translatable="false">pref_plane_mode</string>
+    <string name="pref_total_time_key" translatable="false">pref_total_time</string>
+    <string name="pref_first_time_key" translatable="false">pref_first_time</string>
 </resources>
