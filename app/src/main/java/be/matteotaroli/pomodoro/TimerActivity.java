@@ -34,7 +34,6 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 /**
  * Runs the timer and visually shows its progression.
@@ -115,9 +114,9 @@ public class TimerActivity extends AppCompatActivity {
         (menu.findItem(R.id.settings)).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem menuItem) {
-            /* TODO : Open settings */
-                Toast.makeText(TimerActivity.this, "Settings should open", Toast.LENGTH_SHORT).show();
-                return false;
+                Intent i = new Intent(TimerActivity.this, SettingsActivity.class);
+                startActivity(i);
+                return true;
             }
         });
         return true;

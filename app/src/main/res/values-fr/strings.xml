@@ -14,4 +14,8 @@
     <string name="pomodoro_explanation">La Technique Pomodoro est une technique de gestion du temps utilisant un minuteur pour découper le travail en périodes de 25 minutes, entrecoupées de courtes pauses.</string>
     <string name="what_is_it">Qu\'est ce que Pomodoro?</string>
     <string name="settings">Paramètres</string>
+    <string name="pref_notif">Afficher notification</string>
+    <string name="pref_notif_summary">Affiche une notification pendant que le timer tourne, permettant de voir le temps restant.</string>
+    <string name="pref_plane_mode">Mode avion</string>
+    <string name="pref_plane_mode_summary">Met le téléphone en mode avion pendant que le timer tourne, permettant de se concentrer complètement sur votre travail!</string>
 </resources>
