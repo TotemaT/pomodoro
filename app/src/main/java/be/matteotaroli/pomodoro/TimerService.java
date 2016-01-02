@@ -31,7 +31,6 @@ import android.os.IBinder;
 import android.os.Vibrator;
 import android.support.annotation.Nullable;
 import android.support.v7.app.NotificationCompat;
-import android.widget.Toast;
 
 import java.util.Date;
 
@@ -69,7 +68,6 @@ public class TimerService extends Service {
                 Vibrator mVibrator =
                         (Vibrator) getApplication().getSystemService(Activity.VIBRATOR_SERVICE);
                 mVibrator.vibrate(TimerActivity.VIBRATOR_PATTERN, -1);
-                Toast.makeText(TimerService.this, R.string.time_is_up, Toast.LENGTH_SHORT).show();
                 showFinishedNotification();
             }
             sendBroadcast(intent);
