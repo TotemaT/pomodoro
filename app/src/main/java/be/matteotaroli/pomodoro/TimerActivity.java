@@ -44,8 +44,7 @@ public class TimerActivity extends AppCompatActivity {
     public static final String IS_LONG_CLICK_EXTRA = "isLongCLick";
 
     /* UI elements */
-    private TextView mMinutesTv;
-    private TextView mSecondsTv;
+    private TextView mTimerTv;
     private CircleTimerView mCircleTimerView;
 
     /* Timer constants */
@@ -107,8 +106,7 @@ public class TimerActivity extends AppCompatActivity {
                 return true;
             }
         });
-        mMinutesTv = (TextView) findViewById(R.id.minutes_textview);
-        mSecondsTv = (TextView) findViewById(R.id.seconds_textview);
+        mTimerTv = (TextView) findViewById(R.id.timer_textview);
         updateUI(timerIntent.getIntExtra(TimerService.TIME_EXTRA, mTotalTime));
     }
 
@@ -157,8 +155,11 @@ public class TimerActivity extends AppCompatActivity {
     public void updateUI(long timeInSeconds) {
         int minutes = (int) timeInSeconds / 60;
         int seconds = (int) timeInSeconds % 60;
-        mMinutesTv.setText(String.format("%02d", minutes));
-        mSecondsTv.setText(String.format("%02d", seconds));
+
+        String timer = getString(R.string.timer_text,
+                String.format("%02d", minutes), String.format("%02d", seconds));
+        mTimerTv.setText(timer);
+
         updateCircleView(timeInSeconds);
     }
 

@@ -169,7 +169,7 @@ public class TimerService extends Service {
     private void showOngoingNotification() {
         String minutes = String.format("%02d", mTimeLeft / 60);
         String seconds = String.format("%02d", mTimeLeft % 60);
-        showNotification(getResources().getString(R.string.notification_text, minutes, seconds), false);
+        showNotification(getResources().getString(R.string.timer_text, minutes, seconds), false);
     }
 
     /**

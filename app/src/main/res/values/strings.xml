@@ -3,7 +3,7 @@
 
     <string name="time_is_up">Time is up. Good work, time to take a break!</string>
     <string name="logo_description">Pomodoro Logo</string>
-    <string name="notification_text" translatable="false">%1$s : %2$s</string>
+    <string name="timer_text" translatable="false">%1$s:%2$s</string>
     <string name="intro_welcome">Welcome!</string>
     <string name="intro_before_starting">Before starting, let\'s take a quick look at the way this app works.</string>
     <string name="intro_easy">It\'s easy!</string>
