@@ -21,15 +21,7 @@
         android:padding="32dp">
 
         <TextView
-            android:id="@+id/minutes_textview"
-            style="@style/TimerTextView"/>
-
-        <TextView
-            style="@style/TimerTextView"
-            android:text=":"/>
-
-        <TextView
-            android:id="@+id/seconds_textview"
+            android:id="@+id/timer_textview"
             style="@style/TimerTextView"/>
 
     </LinearLayout>

@@ -21,11 +21,13 @@ package be.matteotaroli.pomodoro;
 import android.annotation.TargetApi;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -45,8 +47,7 @@ public class TimerActivity extends AppCompatActivity {
     public static final String IS_LONG_CLICK_EXTRA = "isLongCLick";
 
     /* UI elements */
-    private TextView mMinutesTv;
-    private TextView mSecondsTv;
+    private TextView mTimerTv;
     private CircleTimerView mCircleTimerView;
 
     /* Timer constants */
@@ -59,6 +60,9 @@ public class TimerActivity extends AppCompatActivity {
     private final BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
+            if (intent.getBooleanExtra(TimerService.IS_OVER_EXTRA, false)) {
+                showEndDialog();
+            }
             updateUI(intent.getLongExtra(TimerService.CURRENT_TIME_EXTRA, 0));
         }
     };
@@ -96,8 +100,7 @@ public class TimerActivity extends AppCompatActivity {
                 return true;
             }
         });
-        mMinutesTv = (TextView) findViewById(R.id.minutes_textview);
-        mSecondsTv = (TextView) findViewById(R.id.seconds_textview);
+        mTimerTv = (TextView) findViewById(R.id.timer_textview);
     }
 
     @Override
@@ -114,6 +117,19 @@ public class TimerActivity extends AppCompatActivity {
             }
         });
         return true;
+    }
+
+    private void showEndDialog() {
+        new AlertDialog.Builder(this)
+                .setMessage(R.string.time_is_up)
+                .setCancelable(false)
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        resetUI();
+                    }
+                })
+                .create().show();
     }
 
     @Override
@@ -155,8 +171,11 @@ public class TimerActivity extends AppCompatActivity {
     public void updateUI(long timeInSeconds) {
         int minutes = (int) timeInSeconds / 60;
         int seconds = (int) timeInSeconds % 60;
-        mMinutesTv.setText(String.format("%02d", minutes));
-        mSecondsTv.setText(String.format("%02d", seconds));
+
+        String timer = getString(R.string.timer_text,
+                String.format("%02d", minutes), String.format("%02d", seconds));
+        mTimerTv.setText(timer);
+
         updateCircleView(timeInSeconds);
     }
 
