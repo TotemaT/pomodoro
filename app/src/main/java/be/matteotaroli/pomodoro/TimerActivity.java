@@ -180,7 +180,7 @@ public class TimerActivity extends AppCompatActivity {
                 mTimerTv.setText(timer);
             }
         });
-        updateCircleView(timeInSeconds);g
+        updateCircleView(timeInSeconds);
     }
 
     /**
