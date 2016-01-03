@@ -168,15 +168,19 @@ public class TimerActivity extends AppCompatActivity {
      *
      * @param timeInSeconds Actual time in seconds
      */
-    public void updateUI(long timeInSeconds) {
-        int minutes = (int) timeInSeconds / 60;
-        int seconds = (int) timeInSeconds % 60;
+    public void updateUI(final long timeInSeconds) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                int minutes = (int) timeInSeconds / 60;
+                int seconds = (int) timeInSeconds % 60;
 
-        String timer = getString(R.string.timer_text,
-                String.format("%02d", minutes), String.format("%02d", seconds));
-        mTimerTv.setText(timer);
-
-        updateCircleView(timeInSeconds);
+                String timer = getString(R.string.timer_text,
+                        String.format("%02d", minutes), String.format("%02d", seconds));
+                mTimerTv.setText(timer);
+            }
+        });
+        updateCircleView(timeInSeconds);g
     }
 
     /**
