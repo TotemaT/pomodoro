@@ -29,6 +29,7 @@ import android.content.res.Resources;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Vibrator;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v7.app.NotificationCompat;
 import android.widget.Toast;
@@ -182,6 +183,10 @@ public class TimerService extends Service {
      * @param dismiss If the notification should be dismissed when the user swipe it.
      */
     private void showNotification(String content, boolean dismiss) {
+        if (!PreferenceManager.getDefaultSharedPreferences(this).getBoolean(getString(R.string.pref_notif_key), true)) {
+            hideNotification();
+            return;
+        }
         Intent intent = new Intent(this, TimerActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
                 Intent.FLAG_ACTIVITY_CLEAR_TASK);
