@@ -1,6 +1,7 @@
-![Logo](app/src/main/res/drawable-xhdpi/pomodoro.png)
-
-[![Build Status](https://travis-ci.org/Crapoo/pomodoro.svg)](https://travis-ci.org/Crapoo/pomodoro) ![License GPL3](https://img.shields.io/github/license/Crapoo/Pomodoro.svg)
+<p align="center">
+	<img src="app/src/main/res/drawable-xhdpi/pomodoro.png" />
+</p>
+[![Build Status](https://travis-ci.org/TotemaT/pomodoro.svg)](https://travis-ci.org/TotemaT/pomodoro) ![License GPL3](https://img.shields.io/github/license/TotemaT/Pomodoro.svg)
 
 # Pomodoro
 Pomodoro Technique app for Android
